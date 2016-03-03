@@ -1,0 +1,82 @@
+﻿@using PagedList.Mvc
+@model SharePointApp.Web.Models.FilesViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2>Upload a File</h2>   
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Search location by <i>Customer Name</i></h3>
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new {enctype = "multipart/form-data"}))
+        {
+            <p>
+                <input type="text" name="searchString"/>
+            </p>
+            <p>
+                <input type="submit" value="Search"/>
+            </p>
+        }
+    </div>
+
+</div>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+
+<div class="row">
+    <table class="table">
+        <tr>
+            <th>Name</th>
+
+
+        </tr>
+
+        @for (int i = 0; i < Model.ListOfFiles.Count; i++)
+        {
+
+            <tr>
+                <td class="left">@Html.RadioButton("folderSelection", @Model.ListOfFiles[i].Link, false, new { @class = "radio-folder" }) <span>@Model.ListOfFiles[i].Name</span></td>
+            </tr>
+        }
+    </table>
+
+    <br />
+    @if (Model.ListOfFiles.TotalItemCount > 0)
+    {
+        <label>Page @(Model.ListOfFiles.PageCount < Model.ListOfFiles.PageNumber ? 0 : Model.ListOfFiles.PageNumber) of @Model.ListOfFiles.PageCount</label>
+    }
+
+
+    @Html.PagedListPager(Model.ListOfFiles, page => Url.Action("About",
+    new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+    Total Items: @Model.ListOfFiles.TotalItemCount
+
+
+
+
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Select a file</h3>
+
+
+        <p>
+            <input type="file" name="file"/>
+        </p>
+        <p>
+            <input type="submit" value="Upload"/>
+        </p>
+
+    </div>
+</div>
+}
+<script>
+    $(".radio-folder").val
+
+</script>

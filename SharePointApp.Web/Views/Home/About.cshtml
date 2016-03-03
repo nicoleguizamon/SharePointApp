@@ -1,0 +1,56 @@
+﻿@model SharePointApp.Web.Models.FilesViewModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "About";
+}
+<div class="jumbotron">
+    <h2>Search Files</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Enter Customer Name to search</h3>
+       @using (Html.BeginForm("About", "Home", FormMethod.Get, new { enctype = "multipart/form-data" }))
+       {
+        <p>
+            <input type="text" name="searchString" />
+        </p>
+        <p>
+            <input type="submit" value="Search" />
+        </p>
+       }
+    </div>
+
+</div>
+
+<br/>
+<br/>
+
+
+<table class="table">
+    <tr>
+        <th >Name</th>
+
+
+    </tr>
+
+    @foreach (var item in Model.ListOfFiles)
+    {
+
+        <tr>
+            <td class="left"><a href="@item.Link" target="_blank">@item.Name</a></td>
+        </tr>
+
+    }
+</table>
+
+<br/>
+@if (Model.ListOfFiles.TotalItemCount > 0)
+{
+<label>Page @(Model.ListOfFiles.PageCount < Model.ListOfFiles.PageNumber ? 0 : Model.ListOfFiles.PageNumber) of @Model.ListOfFiles.PageCount</label>    
+}
+
+
+@Html.PagedListPager(Model.ListOfFiles, page => Url.Action("About",
+    new { page, sortOrder = Model.CurrentSort, currentFilter = Model.CurrentFilter }))
+Total Items: @Model.ListOfFiles.TotalItemCount
